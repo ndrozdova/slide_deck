@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Alzheimer Disease Prediction</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Alzheimer Disease Prediction">
+  <meta name="author" content="">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Alzheimer Disease Prediction</h1>
+    <h2>based on the versions of the Apolipoprotein E gene</h2>
+    <p><br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This application aims to provide a simplified way of predicting Alzheimer&#39;s disease based on the versions of the Apolipoprotein E gene inherited from one&#39;s parents. The data set comes from &#39;AppliedPredictiveModeling&#39; R package [1].</p>
+
+<h2>Building a Model</h2>
+
+<pre><code class="r">library(shiny)
+library(caret)
+library(e1071)
+library(AppliedPredictiveModeling)
+data(AlzheimerDisease)
+set.seed(&quot;12345&quot;)
+df = data.frame(diagnosis = diagnosis,Genotype = predictors[,&quot;Genotype&quot;])
+inTrain = createDataPartition(df$diagnosis, p = 0.8)[[1]]
+training = df[ inTrain,]
+testing = df[-inTrain,]
+modelFit&lt;-train(diagnosis ~ Genotype, data = training, method = &quot;glm&quot;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Model Summary</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Generalized Linear Model 
+## 
+## 267 samples
+##   1 predictors
+##   2 classes: &#39;Impaired&#39;, &#39;Control&#39; 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (25 reps) 
+## 
+## Summary of sample sizes: 267, 267, 267, 267, 267, 267, ... 
+## 
+## Resampling results
+## 
+##   Accuracy  Kappa  Accuracy SD  Kappa SD
+##   0.7       0.05   0.03         0.05    
+## 
+## 
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Model Testing</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">predict1 &lt;- predict(modelFit, testing)
+table(testing$diagnosis, predict1)
+</code></pre>
+
+<pre><code>##           predict1
+##            Impaired Control
+##   Impaired        4      14
+##   Control         4      44
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Using the Application</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This application is easy to use.  It provides an instant prediction based on selected Genotype.</p>
+
+<p>To see the application in action, please complete the following steps:</p>
+
+<ul>
+<li>Go to <a href="https://natashadrozdova.shinyapps.io/Project/">https://natashadrozdova.shinyapps.io/Project/</a></li>
+<li>Select a predictor called Genotype from the dropdown box at the left side of the screen.</li>
+<li>Click Submit button to see the result in the gray box at the right side of the screen.</li>
+</ul>
+
+<h4>References</h4>
+
+<ol>
+<li>Max Kuhn, Kjell Johnson, Package &#39;AppliedPredictiveModeling&#39;, <a href="http://cran.r-project.org/web/packages/AppliedPredictiveModeling/AppliedPredictiveModeling.pdf">http://cran.r-project.org/web/packages/AppliedPredictiveModeling/AppliedPredictiveModeling.pdf</a> (February 3, 2014)</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Model Summary'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Model Testing'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Using the Application'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
